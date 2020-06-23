@@ -22,11 +22,11 @@ class _SignInState extends State<SignIn> {
               children: [
                 TextField(
                   style: simpleTextStyle(),
-                  decoration: textFieldInputDecoration("email"),
+                  decoration: textFieldInputDecoration("Email"),
                 ),
                 TextField(
                   style: simpleTextStyle(),
-                  decoration: textFieldInputDecoration("password"),
+                  decoration: textFieldInputDecoration("Password"),
                 ),
                 SizedBox(
                   height: 8,
@@ -97,7 +97,7 @@ class _SignInState extends State<SignIn> {
                   ],
                 ),
                 SizedBox(
-                  height: 50,
+                  height: 60,
                 ),
               ],
             ),
