@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:messenger_app/helper/helperfunctions.dart';
 import 'package:messenger_app/services/auth.dart';
+import 'package:messenger_app/services/database.dart';
 import 'package:messenger_app/views/chatRoomScreen.dart';
 import 'package:messenger_app/widgets/widgets.dart';
 
@@ -14,6 +16,7 @@ class _SignUpState extends State<SignUp> {
   bool isLoading = false;
 
   AuthMethods authMethods = new AuthMethods();
+  DatabaseMethods databaseMethods = new DatabaseMethods();
 
   final formKey = GlobalKey<FormState>();
   TextEditingController userNameTextEditingController =
@@ -25,6 +28,15 @@ class _SignUpState extends State<SignUp> {
 
   signMeUp() {
     if (formKey.currentState.validate()) {
+      Map<String, String> userInfoMap = {
+        "name": userNameTextEditingController.text,
+        "email": emailTextEditingController.text
+      };
+      HelperFunctions.saveUserEmailSharedPreference(
+          emailTextEditingController.text);
+      HelperFunctions.saveUserNameSharedPreference(
+          userNameTextEditingController.text);
+
       setState(() {
         isLoading = true;
       });
@@ -35,6 +47,8 @@ class _SignUpState extends State<SignUp> {
           .then((val) {
         //print("$val.uid");
 
+        databaseMethods.uploadUserInfo(userInfoMap);
+        HelperFunctions.saveUserLoggedInSharedPreference(true);
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => ChatRoom()));
       });
