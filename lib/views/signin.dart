@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:messenger_app/helper/helperfunctions.dart';
 import 'package:messenger_app/services/auth.dart';
@@ -23,6 +24,7 @@ class _SignInState extends State<SignIn> {
       new TextEditingController();
 
   bool isLoading = false;
+  QuerySnapshot snapshotUserInfo;
 
   signIn() {
     if (formKey.currentState.validate()) {
@@ -34,7 +36,13 @@ class _SignInState extends State<SignIn> {
       setState(() {
         isLoading = true;
       });
-      databaseMethods.getUserByUserEmail(emailTextEditingController.text);
+      databaseMethods
+          .getUserByUserEmail(emailTextEditingController.text)
+          .then((val) {
+        snapshotUserInfo = val;
+        HelperFunctions.saveUserEmailSharedPreference(
+            snapshotUserInfo.documents[0].data["name"]);
+      });
 
       authMethods
           .signInWithEmailAndPassword(emailTextEditingController.text,
